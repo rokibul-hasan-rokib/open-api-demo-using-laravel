@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Services\DeepSeekService;
 use Illuminate\Http\Request;
 
 class GeminiController extends Controller
@@ -33,5 +34,13 @@ class GeminiController extends Controller
         return response()->json([
             'reply' => '❌ Gemini API Error: ' . ($data['error']['message'] ?? 'Unknown error.')
         ], 500);
+    }
+
+    public function askAi(Request $request)
+    {
+        $service = new DeepSeekService();
+        $response = $service->ask($request->input('question'));
+
+        return response()->json($response);
     }
 }
